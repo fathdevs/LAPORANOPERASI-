@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Operasi - Daftar Laporan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Laporan Operasi</h1>
+            <button class="btn btn-primary" onclick="window.location.href='form.html'">
+                <span>+</span> Tambah Laporan Baru
+            </button>
+        </header>
+
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="Cari berdasarkan nama pasien, no RM, atau diagnosis..." 
+                   onkeyup="filterLaporan()">
+            <select id="filterDate" onchange="filterLaporan()">
+                <option value="">Semua Tanggal</option>
+            </select>
+        </div>
+
+        <div class="table-container">
+            <table id="laporanTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal Operasi</th>
+                        <th>Nama Pasien</th>
+                        <th>No RM</th>
+                        <th>Diagnosis</th>
+                        <th>Jenis Operasi</th>
+                        <th>Dokter Bedah</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="laporanTableBody">
+                    <!-- Data akan diisi oleh JavaScript -->
+                </tbody>
+            </table>
+            <div id="emptyState" class="empty-state">
+                <p>Belum ada laporan operasi. Klik "Tambah Laporan Baru" untuk membuat laporan pertama.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Load dan tampilkan data saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLaporanList();
+            populateDateFilter();
+        });
+    </script>
+</body>
+</html>
+

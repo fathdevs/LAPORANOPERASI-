@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lihat Laporan Operasi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="form-header">
+            <h1>Detail Laporan Operasi</h1>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'">Kembali</button>
+                <button class="btn btn-warning" onclick="editLaporan()">Edit</button>
+                <button class="btn btn-success" onclick="exportCurrentLaporan()">Export PDF</button>
+            </div>
+        </header>
+
+        <div id="laporanDetail">
+            <!-- Detail akan diisi oleh JavaScript -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        let currentLaporanId = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            if (id) {
+                currentLaporanId = id;
+                loadLaporanDetail(id);
+            } else {
+                alert('ID laporan tidak ditemukan!');
+                window.location.href = 'index.html';
+            }
+        });
+
+        function loadLaporanDetail(id) {
+            const laporan = getLaporanById(id);
+            if (!laporan) {
+                alert('Laporan tidak ditemukan!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const detailDiv = document.getElementById('laporanDetail');
+            detailDiv.innerHTML = `
+                <section class="form-section">
+                    <h2>Informasi Pasien</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nama Pasien</label>
+                            <div class="view-value">${laporan.namaPasien || '-'}</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Lahir</label>
+                            <div class="view-value">${formatDate(laporan.tglLahir) || '-'}</div>
+                        </div>
+                        <div class="form-group">
+                            <label>No RM</label>
+                            <div class="view-value">${laporan.noRM || '-'}</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <h2>Rencana Pre Operasi / Tindakan</h2>
+                    <div class="form-group">
+                        <label>1. Anamnesis Singkat</label>
+                        <div class="view-value">${laporan.anamnesis || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>2. Alergi</label>
+                        <div class="view-value">
+                            ${laporan.alergi === 'iya' ? `Iya, ${laporan.alergiDetail || ''}` : 'Tidak'}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>3. Pemeriksaan Fisik</label>
+                        <div class="view-value">${laporan.pemeriksaanFisik || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>4. Diagnosis Pre Operasi / Tindakan</label>
+                        <div class="view-value">${laporan.diagnosisPreOperasi || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>5. Operasi / Tindakan</label>
+                        <div style="margin-left: 20px;">
+                            <div class="form-group">
+                                <label>a. Nama Operasi</label>
+                                <div class="view-value">${laporan.namaOperasi || '-'}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>b. Persiapan Alat Khusus</label>
+                                <div class="view-value">
+                                    ${laporan.alatKhusus === 'iya' ? `Iya, ${laporan.alatKhususDetail || ''}` : 'Tidak'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <h2>Laporan Operasi Tindakan</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Tanggal Operasi</label>
+                            <div class="view-value">${formatDate(laporan.tanggalOperasi) || '-'}</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Jam Mulai</label>
+                            <div class="view-value">${formatTime(laporan.jamMulai) || '-'}</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Jam Selesai</label>
+                            <div class="view-value">${formatTime(laporan.jamSelesai) || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Dokter Bedah</label>
+                            <div class="view-value">${laporan.dokterBedah || '-'}</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Asisten I</label>
+                            <div class="view-value">${laporan.asisten1 || '-'}</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Asisten II</label>
+                            <div class="view-value">${laporan.asisten2 || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Dokter Anestesi</label>
+                            <div class="view-value">${laporan.dokterAnestesi || '-'}</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Perawat Instrumen</label>
+                            <div class="view-value">${laporan.perawatInstrumen || '-'}</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tiper Operasi / Tindakan</label>
+                            <div class="view-value">${laporan.tiperOperasi === 'darurat' ? 'Darurat' : 'Terencana'}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Diagnosa Pasca Bedah</label>
+                        <div class="view-value">${laporan.diagnosaPascaBedah || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Operasi / Tindakan</label>
+                        <div class="view-value">${laporan.operasiTindakan || '-'}</div>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <h2>Anestesi dan Spesimen</h2>
+                    <div class="form-group">
+                        <label>Tipe Anestesi</label>
+                        <div class="view-value">${laporan.tipeAnestesi?.join(', ') || '-'}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Pengirim Spesimen ke Klinik Patologi</label>
+                        <div class="view-value">
+                            ${laporan.spesimen === 'ya' ? 
+                                `Ya - ${laporan.jenisSpesimen?.join(', ') || ''}${laporan.asalSpesimen ? ` (Asal: ${laporan.asalSpesimen})` : ''}` 
+                                : 'Tidak'}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Kultur</label>
+                        <div class="view-value">${laporan.kultur === 'ya' ? 'Ya' : 'Tidak'}</div>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <h2>Perdarahan dan Transfusi</h2>
+                    <div class="form-group">
+                        <label>Perkiraan Jumlah Perdarahan</label>
+                        <div class="view-value">${laporan.perkiraanPerdarahan || '0'} ml</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Transfusi</label>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>WB (Whole Blood)</label>
+                                <div class="view-value">${laporan.transfusiWB || '0'} ml</div>
+                            </div>
+                            <div class="form-group">
+                                <label>PRC (Packed Red Cells)</label>
+                                <div class="view-value">${laporan.transfusiPRC || '0'} ml</div>
+                            </div>
+                            <div class="form-group">
+                                <label>FFP (Fresh Frozen Plasma)</label>
+                                <div class="view-value">${laporan.transfusiFFP || '0'} ml</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Cryo (Cryoprecipitate)</label>
+                                <div class="view-value">${laporan.transfusiCryo || '0'} ml</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function editLaporan() {
+            if (currentLaporanId) {
+                window.location.href = `form.html?id=${currentLaporanId}`;
+            }
+        }
+
+        function exportCurrentLaporan() {
+            if (currentLaporanId) {
+                exportLaporan(currentLaporanId);
+            }
+        }
+    </script>
+    <style>
+        .view-value {
+            padding: 12px;
+            background-color: #f9fafb;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            min-height: 20px;
+            word-wrap: break-word;
+        }
+    </style>
+</body>
+</html>
+

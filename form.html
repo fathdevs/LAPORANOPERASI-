@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Laporan Operasi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="form-header">
+            <h1>Form Laporan Operasi</h1>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'">Kembali</button>
+                <button type="button" class="btn btn-warning" onclick="fillDummyData()">Isi Data Dummy</button>
+                <button class="btn btn-success" onclick="saveLaporan()">Simpan</button>
+            </div>
+        </header>
+
+        <form id="laporanForm" onsubmit="return false;">
+            <!-- Informasi Pasien -->
+            <section class="form-section">
+                <h2>Informasi Pasien</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="namaPasien">Nama Pasien <span class="required">*</span></label>
+                        <input type="text" id="namaPasien" name="namaPasien" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tglLahir">Tanggal Lahir <span class="required">*</span></label>
+                        <input type="date" id="tglLahir" name="tglLahir" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="noRM">No RM <span class="required">*</span></label>
+                        <input type="text" id="noRM" name="noRM" required>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rencana Pre Operasi -->
+            <section class="form-section">
+                <h2>Rencana Pre Operasi / Tindakan</h2>
+                
+                <div class="form-group">
+                    <label for="anamnesis">1. Anamnesis Singkat <span class="required">*</span></label>
+                    <textarea id="anamnesis" name="anamnesis" rows="3" required></textarea>
+                    <small class="form-note">*Ditulis yang mendukung diagnosis saja</small>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Alergi</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="alergi" value="tidak" checked onchange="toggleAlergiDetail()">
+                            Tidak
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="alergi" value="iya" onchange="toggleAlergiDetail()">
+                            Iya,
+                        </label>
+                        <input type="text" id="alergiDetail" name="alergiDetail" placeholder="Sebutkan alergi..." 
+                               style="display: none; margin-left: 10px; flex: 1;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pemeriksaanFisik">3. Pemeriksaan Fisik <span class="required">*</span></label>
+                    <textarea id="pemeriksaanFisik" name="pemeriksaanFisik" rows="3" required></textarea>
+                    <small class="form-note">*Ditulis yang mendukung diagnosis saja</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="diagnosisPreOperasi">4. Diagnosis Pre Operasi / Tindakan <span class="required">*</span></label>
+                    <input type="text" id="diagnosisPreOperasi" name="diagnosisPreOperasi" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="namaOperasi">5. Operasi / Tindakan</label>
+                    <div class="form-subgroup">
+                        <label for="namaOperasi">a. Nama Operasi <span class="required">*</span></label>
+                        <input type="text" id="namaOperasi" name="namaOperasi" required>
+                    </div>
+                    <div class="form-subgroup">
+                        <label>b. Persiapan Alat Khusus</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="alatKhusus" value="tidak" checked onchange="toggleAlatKhususDetail()">
+                                Tidak
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="alatKhusus" value="iya" onchange="toggleAlatKhususDetail()">
+                                Iya,
+                            </label>
+                            <input type="text" id="alatKhususDetail" name="alatKhususDetail" 
+                                   placeholder="Sebutkan alat khusus..." 
+                                   style="display: none; margin-left: 10px; flex: 1;">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Laporan Operasi Tindakan -->
+            <section class="form-section">
+                <h2>Laporan Operasi Tindakan</h2>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="tanggalOperasi">Tanggal <span class="required">*</span></label>
+                        <input type="date" id="tanggalOperasi" name="tanggalOperasi" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="jamMulai">Jam Mulai Operasi / Tindakan <span class="required">*</span></label>
+                        <input type="time" id="jamMulai" name="jamMulai" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="jamSelesai">Jam Selesai Operasi / Tindakan <span class="required">*</span></label>
+                        <input type="time" id="jamSelesai" name="jamSelesai" required>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="dokterBedah">Dokter Bedah <span class="required">*</span></label>
+                        <input type="text" id="dokterBedah" name="dokterBedah" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="asisten1">Asisten I</label>
+                        <input type="text" id="asisten1" name="asisten1">
+                    </div>
+                    <div class="form-group">
+                        <label for="asisten2">Asisten II</label>
+                        <input type="text" id="asisten2" name="asisten2">
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="dokterAnestesi">Dokter Anestesi <span class="required">*</span></label>
+                        <input type="text" id="dokterAnestesi" name="dokterAnestesi" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="perawatInstrumen">Perawat Instrumen</label>
+                        <input type="text" id="perawatInstrumen" name="perawatInstrumen">
+                    </div>
+                    <div class="form-group">
+                        <label>Tiper Operasi / Tindakan</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="tiperOperasi" value="darurat">
+                                Darurat
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="tiperOperasi" value="terencana" checked>
+                                Terencana
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="diagnosaPascaBedah">Diagnosa Pasca Bedah <span class="required">*</span></label>
+                    <textarea id="diagnosaPascaBedah" name="diagnosaPascaBedah" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="operasiTindakan">Operasi / Tindakan <span class="required">*</span></label>
+                    <textarea id="operasiTindakan" name="operasiTindakan" rows="6" required></textarea>
+                </div>
+            </section>
+
+            <!-- Anestesi dan Spesimen -->
+            <section class="form-section">
+                <h2>Anestesi dan Spesimen</h2>
+                
+                <div class="form-group">
+                    <label>Tipe Anestesi <span class="required">*</span></label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="tipeAnestesi" value="GA">
+                            GA
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="tipeAnestesi" value="Epidural">
+                            Epidural
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="tipeAnestesi" value="Spinal">
+                            Spinal
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="tipeAnestesi" value="Peripheral">
+                            Peripheral
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="tipeAnestesi" value="Lokal">
+                            Lokal
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Pengirim Spesimen ke Klinik Patologi</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="spesimen" value="tidak" checked onchange="toggleSpesimenDetail()">
+                            Tidak
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="spesimen" value="ya" onchange="toggleSpesimenDetail()">
+                            Ya
+                        </label>
+                    </div>
+                    <div id="spesimenDetail" style="display: none; margin-top: 10px;">
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="jenisSpesimen" value="Jaringan">
+                                Jaringan
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="jenisSpesimen" value="Batu">
+                                Batu
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="jenisSpesimen" value="Pus">
+                                Pus
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="jenisSpesimen" value="Lainnya">
+                                Lainnya
+                            </label>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px;">
+                            <label for="asalSpesimen">Asal Spesimen</label>
+                            <input type="text" id="asalSpesimen" name="asalSpesimen">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Kultur</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="kultur" value="ya">
+                            Ya
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="kultur" value="tidak" checked>
+                            Tidak
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Perdarahan dan Transfusi -->
+            <section class="form-section">
+                <h2>Perdarahan dan Transfusi</h2>
+                
+                <div class="form-group">
+                    <label for="perkiraanPerdarahan">Perkiraan Jumlah Perdarahan</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="perkiraanPerdarahan" name="perkiraanPerdarahan" min="0">
+                        <span class="unit">ml</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Transfusi</label>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="transfusiWB">WB (Whole Blood)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="transfusiWB" name="transfusiWB" min="0">
+                                <span class="unit">ml</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="transfusiPRC">PRC (Packed Red Cells)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="transfusiPRC" name="transfusiPRC" min="0">
+                                <span class="unit">ml</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="transfusiFFP">FFP (Fresh Frozen Plasma)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="transfusiFFP" name="transfusiFFP" min="0">
+                                <span class="unit">ml</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="transfusiCryo">Cryo (Cryoprecipitate)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="transfusiCryo" name="transfusiCryo" min="0">
+                                <span class="unit">ml</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="form-actions-bottom">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='index.html'">Batal</button>
+                <button type="button" class="btn btn-primary" onclick="saveLaporan()">Simpan Laporan</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Load data jika dalam mode edit
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            if (id) {
+                loadLaporanForEdit(id);
+            }
+        });
+
+        function toggleAlergiDetail() {
+            const alergiIya = document.querySelector('input[name="alergi"][value="iya"]');
+            const alergiDetail = document.getElementById('alergiDetail');
+            alergiDetail.style.display = alergiIya.checked ? 'inline-block' : 'none';
+            if (!alergiIya.checked) {
+                alergiDetail.value = '';
+            }
+        }
+
+        function toggleAlatKhususDetail() {
+            const alatIya = document.querySelector('input[name="alatKhusus"][value="iya"]');
+            const alatDetail = document.getElementById('alatKhususDetail');
+            alatDetail.style.display = alatIya.checked ? 'inline-block' : 'none';
+            if (!alatIya.checked) {
+                alatDetail.value = '';
+            }
+        }
+
+        function toggleSpesimenDetail() {
+            const spesimenYa = document.querySelector('input[name="spesimen"][value="ya"]');
+            const spesimenDetail = document.getElementById('spesimenDetail');
+            spesimenDetail.style.display = spesimenYa.checked ? 'block' : 'none';
+            if (!spesimenYa.checked) {
+                document.querySelectorAll('input[name="jenisSpesimen"]').forEach(cb => cb.checked = false);
+                document.getElementById('asalSpesimen').value = '';
+            }
+        }
+    </script>
+</body>
+</html>
+
