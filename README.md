@@ -1,14 +1,32 @@
-# Laporan Operasi - Sistem Manajemen Laporan Operasi
+# Laporan Operasi
 
-Aplikasi web untuk mengelola laporan operasi dengan fitur CRUD lengkap dan export PDF.
+Aplikasi web berbasis HTML, CSS, dan JavaScript untuk mencatat, mencari, melihat, mengubah, dan mencetak laporan operasi dalam bentuk PDF. Proyek ini berjalan di browser tanpa backend; data disimpan pada `localStorage` perangkat yang digunakan.
 
-## Fitur
+## Ringkasan
 
-- ✅ Input dan edit laporan operasi
-- ✅ Daftar laporan dengan filter dan pencarian
-- ✅ Export ke PDF
-- ✅ Data tersimpan di browser (localStorage)
-- ✅ UI/UX responsif dan modern
+- Form laporan mencakup informasi pasien, rencana praoperasi, tindakan, anestesi, spesimen, serta detail tim operasi.
+- Daftar laporan memiliki pencarian dan filter tanggal.
+- Halaman detail menyediakan aksi edit dan ekspor PDF.
+- Tombol **Isi Data Dummy** membantu mencoba alur tanpa menyiapkan data sendiri.
+
+## Coba secara lokal
+
+1. Clone repo ini.
+2. Buka `index.html` di browser.
+3. Pilih **Tambah Laporan Baru**, isi form atau gunakan **Isi Data Dummy**, lalu simpan.
+4. Cari laporan di halaman utama, buka detailnya, dan coba ekspor PDF.
+
+Tidak ada proses instalasi paket atau database untuk versi ini.
+
+> **Batas penggunaan:** `localStorage` tidak menyediakan sinkronisasi antarperangkat, kontrol akses, atau perlindungan yang sesuai untuk rekam medis nyata. Gunakan **data fiktif** saat mencoba demo ini. Jangan memasukkan identitas atau informasi kesehatan pasien sungguhan.
+
+## Teknologi
+
+`HTML` · `CSS` · `JavaScript` · `localStorage`
+
+## Alur data
+
+`Form → JavaScript → localStorage → Daftar / Detail → PDF`
 
 ## File Struktur
 
@@ -128,12 +146,9 @@ sudo systemctl reload nginx
 3. Deploy otomatis akan dilakukan
 4. Website akan tersedia di URL yang diberikan
 
-## Catatan Penting
+## Catatan penyimpanan
 
-⚠️ **Peringatan Data:**
-- Aplikasi ini menggunakan `localStorage` browser untuk menyimpan data
-- Data hanya tersimpan di browser pengguna, tidak di server
-- Jika ingin data tersimpan di server, perlu menambahkan backend API
+Data hanya tersedia pada browser dan perangkat yang sama. Menghapus data situs pada browser dapat menghapus laporan. Untuk penggunaan operasional diperlukan backend, autentikasi, dan perlindungan data yang sesuai.
 
 ## HTTPS/SSL
 
